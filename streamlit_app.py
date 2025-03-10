@@ -6,7 +6,7 @@ st.markdown(
     """
     <style>
     body {
-        background-image: url("https://upload.wikimedia.org/wikipedia/commons/3/3f/Transparent_vector_background.svg");
+        background-image: url("https://images.unsplash.com/photo-1562505299-a92c9a1c4f37?q=80&w=3024&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
         background-size: cover;
         background-repeat: no-repeat;
         background-attachment: fixed;
