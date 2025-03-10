@@ -1,7 +1,7 @@
 import streamlit as st
 from openai import OpenAI
 
-st.title("You should not be here, i will track your IP address, LEAVE!")
+st.title("You should not be here, I will track your IP address, LEAVE!")
 
 # Set OpenAI API key from Streamlit secrets
 client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
