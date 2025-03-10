@@ -1,38 +1,40 @@
 import streamlit as st
-import pandas as pd
-from io import StringIO
-from st_aggrid import AgGrid, GridOptionsBuilder, GridUpdateMode
+from openai import OpenAI
 
-st.title("Paste Excel Data into Grid")
+st.title("You should not be here, I will track your IP address, LEAVE!")
 
-st.markdown("Copy and paste your Excel data below (tab-separated or CSV format):")
+# Set OpenAI API key from Streamlit secrets
+client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
-# Text area for pasting data
-data_input = st.text_area("Paste your data here:")
+# Set a default model
+if "openai_model" not in st.session_state:
+    st.session_state["openai_model"] = "o1"
 
-if data_input:
-    # Try reading as tab-separated, fall back to CSV if necessary
-    try:
-        df = pd.read_csv(StringIO(data_input), sep="\t")
-    except Exception:
-        df = pd.read_csv(StringIO(data_input), sep=",")
+# Initialize chat history
+if "messages" not in st.session_state:
+    st.session_state.messages = []
 
-    st.write("Original Data:")
-    st.dataframe(df)
+# Display chat messages from history on app rerun
+for message in st.session_state.messages:
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
 
-    # Configure the grid for editable data
-    gb = GridOptionsBuilder.from_dataframe(df)
-    gb.configure_default_column(editable=True, groupable=True)
-    gridOptions = gb.build()
-
-    grid_response = AgGrid(
-        df,
-        gridOptions=gridOptions,
-        update_mode=GridUpdateMode.MODEL_CHANGED,
-        height=300,
-        fit_columns_on_grid_load=True,
-    )
-
-    updated_df = grid_response["data"]
-    st.write("Updated Data:")
-    st.dataframe(updated_df)
+# Accept user input
+if prompt := st.chat_input("What is up?"):
+    # Add user message to chat history
+    st.session_state.messages.append({"role": "user", "content": prompt})
+    # Display user message in chat message container
+    with st.chat_message("user"):
+        st.markdown(prompt)
+    # Display assistant response in chat message container
+    with st.chat_message("assistant"):
+        stream = client.chat.completions.create(
+            model=st.session_state["openai_model"],
+            messages=[
+                {"role": m["role"], "content": m["content"]}
+                for m in st.session_state.messages
+            ],
+            stream=True,
+        )
+        response = st.write_stream(stream)
+    st.session_state.messages.append({"role": "assistant", "content": response})
