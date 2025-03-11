@@ -6,9 +6,17 @@ st.title("You should not be here, I will track your IP address, LEAVE!")
 # Set OpenAI API key from Streamlit secrets
 client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
-# Set a default model
+# Available GPT model options
+model_options = ["gpt-3.5-turbo", "gpt-4", "o1"]
+
+# Initialize model selection in session state if not present
 if "openai_model" not in st.session_state:
-    st.session_state["openai_model"] = "o1"
+    st.session_state["openai_model"] = model_options[0]  # default
+
+# Sidebar: Model selection dropdown and cost breakdown
+with st.sidebar:
+    selected_model = st.selectbox("Choose GPT Model", model_options, index=model_options.index(st.session_state["openai_model"]))
+    st.session_state["openai_model"] = selected_model
 
 # Initialize chat history if not present
 if "messages" not in st.session_state:
