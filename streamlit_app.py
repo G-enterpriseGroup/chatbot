@@ -1,6 +1,10 @@
 import streamlit as st
 from openai import OpenAI
-
+[theme]
+base="light"
+primaryColor="#fffaf0"           ; a warm, soft off-white (Floral White)
+backgroundColor="#f0e2b6"         ; a gentle warm beige for the background
+secondaryBackgroundColor="#f9d29d"  ; a soft amber to complement the palette
 st.title("🏎️💨SKRT SKRT!")
 
 # Set OpenAI API key from Streamlit secrets
