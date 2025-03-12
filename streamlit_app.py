@@ -7,7 +7,7 @@ st.title("You should not be here, I will track your IP address, LEAVE!")
 client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
 # Available GPT model options
-model_options = ["gpt-3.5-turbo", "gpt-4", "o1"]
+model_options = ["gpt-3.5-turbo", "gpt-4","GPT-4o mini", "o1"]
 
 # Initialize model selection in session state if not present
 if "openai_model" not in st.session_state:
